@@ -17,6 +17,6 @@
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
 install(FILES
-    mbr_packet_segmenter_bb.xml
+    #mbr_packet_segmenter_bb.xml
     mbr_udp_tagged_sink.xml DESTINATION share/gnuradio/grc/blocks
 )

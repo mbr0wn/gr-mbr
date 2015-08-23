@@ -42,7 +42,7 @@ namespace gr {
 
      public:
       udp_tagged_sink_impl(
-              int itemsize,
+              const int itemsize,
               const std::string &host,
               const int port,
               const int mtu,
@@ -55,6 +55,9 @@ namespace gr {
 		       gr_vector_const_void_star &input_items,
 		       gr_vector_void_star &output_items
       );
+
+      void connect(const std::string &host, int port);
+      void disconnect();
     };
 
   } // namespace mbr

@@ -22,6 +22,6 @@
 ########################################################################
 install(FILES
     api.h
-    packet_segmenter_bb.h
+    #packet_segmenter_bb.h
     udp_tagged_sink.h DESTINATION include/mbr
 )

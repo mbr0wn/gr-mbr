@@ -1,38 +1,77 @@
 <?xml version="1.0"?>
+<!--
+###################################################
+##UDP Sink
+###################################################
+ -->
 <block>
-  <name>udp_tagged_sink</name>
-  <key>mbr_udp_tagged_sink</key>
-  <category>mbr</category>
-  <import>import mbr</import>
-  <make>mbr.udp_tagged_sink($itemsize, $&host, $port, $mtu, $&tsb_key)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
-  <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
-  </param>
-
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
-  <sink>
-    <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
-  </sink>
-
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
-  <source>
-    <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
-  </source>
+	<name>UDP TSB Sink</name>
+    <key>mbr_udp_tagged_sink</key>
+    <category>mbr</category>
+    <import>import mbr</import>
+    <make>mbr.udp_tagged_sink($type.size*$vlen, $host, $port, $mtu, $tsb_key)</make>
+	<param>
+		<name>Input Type</name>
+		<key>type</key>
+		<type>enum</type>
+		<option>
+			<name>Complex</name>
+			<key>complex</key>
+			<opt>size:gr.sizeof_gr_complex</opt>
+		</option>
+		<option>
+			<name>Float</name>
+			<key>float</key>
+			<opt>size:gr.sizeof_float</opt>
+		</option>
+		<option>
+			<name>Int</name>
+			<key>int</key>
+			<opt>size:gr.sizeof_int</opt>
+		</option>
+		<option>
+			<name>Short</name>
+			<key>short</key>
+			<opt>size:gr.sizeof_short</opt>
+		</option>
+		<option>
+			<name>Byte</name>
+			<key>byte</key>
+			<opt>size:gr.sizeof_char</opt>
+		</option>
+	</param>
+	<param>
+        <name>Destination IP Address/Host</name>
+		<key>host</key>
+		<type>string</type>
+	</param>
+	<param>
+		<name>Destination Port</name>
+		<key>port</key>
+		<type>int</type>
+	</param>
+	<param>
+		<name>MTU</name>
+		<key>mtu</key>
+		<value>1472</value>
+		<type>int</type>
+	</param>
+	<param>
+		<name>Vec Length</name>
+		<key>vlen</key>
+		<value>1</value>
+		<type>int</type>
+	</param>
+	<param>
+		<name>TSB Key</name>
+		<key>tsb_key</key>
+		<value>packet_len</value>
+		<type>string</type>
+	</param>
+	<check>$vlen &gt; 0</check>
+	<sink>
+		<name>in</name>
+		<type>$type</type>
+		<vlen>$vlen</vlen>
+	</sink>
 </block>

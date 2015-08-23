@@ -25,7 +25,7 @@ include(GrPlatform) #define LIB_SUFFIX
 include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND mbr_sources
-    packet_segmenter_bb_impl.cc
+    #packet_segmenter_bb_impl.cc
     udp_tagged_sink_impl.cc )
 
 set(mbr_sources "${mbr_sources}" PARENT_SCOPE)

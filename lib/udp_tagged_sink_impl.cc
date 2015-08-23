@@ -39,15 +39,16 @@ namespace gr {
      * The private constructor
      */
     udp_tagged_sink_impl::udp_tagged_sink_impl(
-            int itemsize,
+            const int itemsize,
             const std::string &host,
             const int port,
             const int mtu,
             const std::string &tsb_key
     ) : gr::tagged_stream_block("udp_tagged_sink",
               gr::io_signature::make(1, 1, itemsize),
-              gr::io_signature::make(0, 0, 0), tsb_key)
+              gr::io_signature::make(0, 0, 0), tsb_key),
         d_itemsize(itemsize),
+        d_mtu(mtu),
         d_connected(false)
     {
       connect(host, port);
@@ -104,15 +105,16 @@ namespace gr {
                        gr_vector_void_star &output_items)
     {
       const char *in = (const char *) input_items[0];
-      ssize_t bytes_to_send = ninput_items[0] * d_itemsize;
+      const ssize_t bytes_to_send = ninput_items[0] * d_itemsize;
 
       gr::thread::scoped_lock guard(d_mutex);  // protect d_socket
       if (!d_connected || bytes_to_send > d_mtu) {
-          return ninput_items[0];
+        GR_LOG_INFO(d_debug_logger, boost::format("Dropped packet of length %d") % bytes_to_send);
+        return ninput_items[0];
       }
 
       try {
-        r = d_socket->send_to(
+        const ssize_t r = d_socket->send_to(
             boost::asio::buffer((void*)(in), ssize_t(bytes_to_send)),
             d_endpoint
         );

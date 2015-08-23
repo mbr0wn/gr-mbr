@@ -46,7 +46,13 @@ namespace gr {
        * class. mbr::udp_tagged_sink::make is the public interface for
        * creating new instances.
        */
-      static sptr make(int itemsize, const std::string &host, const int port, const int mtu, const std::string &tsb_key);
+      static sptr make(
+              const int itemsize,
+              const std::string &host,
+              const int port,
+              const int mtu,
+              const std::string &tsb_key
+      );
     };
 
   } // namespace mbr
